@@ -5,15 +5,16 @@ import matplotlib.animation as animation
 
 if __name__=="__main__":
     step_size = 1e-2
-    frames = 20
-    E = np.logspace(np.log10(1/12), np.log10(1/7), frames)
+    frames = 100
+    #E = np.logspace(np.log10(1/12), np.log10(1/7), frames)
+    E = np.linspace(1/12, 1/7, frames)
     n_steps = 1000000
     n_initial_conditions = 50
     
     fig, ax = plt.subplots()
     line, = ax.plot([], [], 'o', color='b', markersize=1)
-    ax.set_xlim(-1/2, 1/2)
-    ax.set_ylim(-1/2, 1/2)
+    ax.set_xlim(-1, 1)
+    ax.set_ylim(-1, 1)
     ax.set_xlabel('$q_2$')
     ax.set_ylabel('$p_2$')
     ax.set_title('Portrait de phase pour le système de Hénon-Heiles')
@@ -33,8 +34,9 @@ if __name__=="__main__":
             q_data.extend(q[mask, 1])
             p_data.extend(p[mask, 1])
         line.set_data(q_data, p_data)
-        ax.legend([f'E = {energy:.2f}'])
+        ax.legend([f'E = {energy:.3f}'])
+        print(f'Frame {frame+1}/{frames} done.')
         return line,
 
     ani = animation.FuncAnimation(fig, update, frames=frames, init_func=init, blit=True)
-    ani.save('henon_heiles.gif', writer='imagemagick', fps=10/frames)
+    ani.save('henon_heiles.gif', writer='imagemagick', fps=10)
